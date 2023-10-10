@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 8f;
-    void Update() // Update is called once per frame
+    private float speed = 8f; 
+    public void FixedUpdate() // Update is called once per frame
     {
-
+    
         Vector3 movement = new Vector3();
 
         if(Input.GetKey(KeyCode.W))
@@ -29,6 +27,6 @@ public class PlayerMovement : MonoBehaviour
 
         movement.Normalize();
         transform.position += movement * Time.deltaTime * speed;
-        
+       
     }
 }
