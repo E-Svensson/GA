@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private float speed = 8f; 
-    public void FixedUpdate() // Update is called once per frame
+    void FixedUpdate() // Update is called once per frame
     {
     
         Vector3 movement = new Vector3();
