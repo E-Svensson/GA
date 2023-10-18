@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - ' Wall'
+  - StairUp
+  - StairDown
+  - ' StairConfirm'
   layers:
   - Default
   - TransparentFX

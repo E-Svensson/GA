@@ -1,28 +1,15 @@
-using Unity.VisualScripting;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class StairController : MonoBehaviour
 {
-    private float speed = 8f;
-    public Rigidbody2D rb;
-    Vector2 movement;
     bool Up = false;
     bool Down = false;
-    Vector2 newScale;
     void Start()
     {
-            Debug.Log("Hello");
+        Debug.Log("Hello");
     }
-    void FixedUpdate() 
-    {
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-    }
-    void Update()// Update is called once per frame
-    {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-    }
-    
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag=="StairUp")
