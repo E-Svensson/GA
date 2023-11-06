@@ -1,18 +1,12 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 8f;
+    private float speed;
+    public double stamina = 1;
     public Rigidbody2D rb;
     Vector2 movement;
-    bool Up = false;
-    bool Down = false;
-    Vector2 newScale;
-    void Start()
-    {
-            Debug.Log("Hello");
-    }
+
     void FixedUpdate() 
     {
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
@@ -21,30 +15,15 @@ public class PlayerMovement : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+        movement.Normalize();
+
+        speed = 8f;
+        if (Input.GetKey(KeyCode.LeftShift) && stamina > 0){
+            speed = 12f;
+            stamina -= 0.001;
+        }
+        if (stamina != 1 && !Input.GetKey(KeyCode.LeftShift))
+            stamina += 0.001;
     }
     
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.tag=="StairUp")
-        {
-            Up = true;
-            Down = false;
-        }
-
-        if(other.tag=="StairUp")
-        {
-            Down = true;
-            Up = false;
-        }
-
-        if(other.tag=="StairConfirm" && Up==true)
-        {
-            Debug.Log("Up");
-        }
-
-        if(other.tag=="StairConfirm" && Down==true)
-        {
-            Debug.Log("Down");
-        }
-    }
 }
