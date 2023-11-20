@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     private float moveSpeed = 3f;
     private Rigidbody2D rb;
     private Vector2 movement;
+    private float currentHealth;
+    private float maxHealth = 100;
 
     void Start()
     {
@@ -22,6 +24,10 @@ public class Enemy : MonoBehaviour
         rb.rotation = angle;
         direction.Normalize();
         movement = direction;
+
+        if(Input.GetKeyDown(KeyCode.Space)){
+            currentHealth -= 10;
+        }
     }
 
     void FixedUpdate()
@@ -31,4 +37,9 @@ public class Enemy : MonoBehaviour
     void moveCharacter(Vector2 direction){
         rb.MovePosition((Vector2)transform.position + (direction * moveSpeed * Time.deltaTime));
     }
+    public Vector2 GetHealth()
+    {
+        return new Vector2(currentHealth, maxHealth);
+    }
+
 }

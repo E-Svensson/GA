@@ -9,16 +9,17 @@ public class PlayerMovement : MonoBehaviour
     private float period = 0.5f;
     private float speed;
     private bool running = false;
-    public int maxStamina = 100;
-    public int currentStamina;
-    public StaminaBar staminaBar;
+    public float maxStamina = 100;
+    public float currentStamina;
+    public float currentHealth;
+    public float maxHealth = 100;  
     public Rigidbody2D rb;
     Vector2 movement;
 
     void Start()
     {
         currentStamina = maxStamina;
-        staminaBar.SetMaxStamina(maxStamina);
+        currentHealth = maxHealth;
     }
     void FixedUpdate() 
     {
@@ -38,39 +39,34 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         direction.Normalize();
 
-        if(running && (direction.x != 0 || direction.y != 0))
+        if(Input.GetKeyDown(KeyCode.Space)){
+            currentHealth -= 10;
+        }
+
+        if(running && currentStamina > 0)
         {
             speed = 6f;
-            if(Time.time > nextAction){
-                nextAction += period;
-                StaminaCost(10);
+            if((direction.x != 0 || direction.y != 0))
+            {
+                currentStamina -= 10 * Time.deltaTime;
             }
-
-            if(currentStamina == 0)
-            running = false;
-            
         }
         else
         {
             speed = 3f;
-            if(Time.time > nextAction){
-                nextAction += period;
-                StaminaRecharge(5);
-            }
-        } 
-    }
+            currentStamina += 5 * Time.deltaTime;
+        }
 
-    void StaminaCost(int cost)
+        currentHealth = Mathf.Clamp(currentHealth, -1, maxHealth);
+        currentStamina = Mathf.Clamp(currentStamina, -1, maxStamina); 
+    }
+    public Vector2 GetHealth()
     {
-        currentStamina -= cost;
-
-        staminaBar.SetStamina(currentStamina);
+        return new Vector2(currentHealth, maxHealth);
     }
-
-    void StaminaRecharge(int charge)
+    public Vector2 GetStamina()
     {
-        currentStamina += charge;
-
-        staminaBar.SetStamina(currentStamina);
+        return new Vector2(currentStamina, maxStamina);
     }
+
 }
