@@ -642,6 +642,7 @@ MonoBehaviour:
   currentStamina: 0
   currentHealth: 0
   maxHealth: 100
+  knockbackPoint: {fileID: 684663646}
   rb: {fileID: 684663648}
 --- !u!212 &684663645
 SpriteRenderer:
@@ -99781,7 +99782,7 @@ GameObject:
   - component: {fileID: 2106283058}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

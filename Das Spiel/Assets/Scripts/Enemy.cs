@@ -41,5 +41,4 @@ public class Enemy : MonoBehaviour
     {
         return new Vector2(currentHealth, maxHealth);
     }
-
 }

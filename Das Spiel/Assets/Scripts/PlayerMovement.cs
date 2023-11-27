@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float currentStamina;
     public float currentHealth;
     public float maxHealth = 100;  
+    public Transform knockbackPoint;
     public Rigidbody2D rb;
     Vector2 movement;
 
@@ -25,31 +26,28 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
     }
-    void Update()// Update is called once per frame
+    void Update() // Update is called once per frame
     {
+        // Gör det möjligt för gubben att röra på sig med WASD eller piltangenterna
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        movement.Normalize();
+        movement.Normalize(); // Normaliserar gubbens rörelser enligt enhetscirkeln
 
         if (Input.GetKeyDown(KeyCode.LeftShift)) 
-        running = true;
-        else if(Input.GetKeyUp(KeyCode.LeftShift))
-        running = false;
+            running = true;
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+            running = false;
 
         Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         direction.Normalize();
 
-        if(Input.GetKeyDown(KeyCode.Space)){
-            currentHealth -= 10;
-        }
-
         if(running && currentStamina > 0)
         {
             speed = 6f;
-            if((direction.x != 0 || direction.y != 0))
-            {
+
+            // Stamina ska endast minska om gubben rör på sig
+            if(direction.x != 0 || direction.y != 0)
                 currentStamina -= 10 * Time.deltaTime;
-            }
         }
         else
         {
@@ -69,4 +67,11 @@ public class PlayerMovement : MonoBehaviour
         return new Vector2(currentStamina, maxStamina);
     }
 
+    
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.transform.tag == "Enemy")
+        {
+            currentHealth -= 10;
+        }
+    }
 }
