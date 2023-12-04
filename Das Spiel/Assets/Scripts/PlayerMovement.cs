@@ -1,20 +1,17 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float timer;
-    private float nextAction = 0f;
-    private float period = 0.5f;
+
     private float speed;
     private bool running = false;
     public float maxStamina = 100;
     public float currentStamina;
     public float currentHealth;
     public float maxHealth = 100;  
-    public Transform knockbackPoint;
     public Rigidbody2D rb;
+    public UnityEvent<GameObject> OnHitWithReference;
     Vector2 movement;
 
     void Start()
@@ -29,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     void Update() // Update is called once per frame
     {
         // Gör det möjligt för gubben att röra på sig med WASD eller piltangenterna
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         movement.Normalize(); // Normaliserar gubbens rörelser enligt enhetscirkeln
@@ -67,11 +65,18 @@ public class PlayerMovement : MonoBehaviour
         return new Vector2(currentStamina, maxStamina);
     }
 
-    
+
+    public void GetHit(GameObject sender)
+    {
+        OnHitWithReference?.Invoke(sender);
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.transform.tag == "Enemy")
         {
             currentHealth -= 10;
-        }
+        } 
     }
+    
+    
 }
