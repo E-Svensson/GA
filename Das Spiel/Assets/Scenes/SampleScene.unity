@@ -1514,7 +1514,7 @@ GameObject:
   - component: {fileID: 1529559367}
   - component: {fileID: 1529559366}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Grid_layered_above
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99092,7 +99092,7 @@ GameObject:
   - component: {fileID: 1676871936}
   - component: {fileID: 1676871935}
   m_Layer: 0
-  m_Name: Grid-Col
+  m_Name: Grid-layered_below
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
