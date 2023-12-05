@@ -1,3 +1,5 @@
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,13 +8,14 @@ public class PlayerMovement : MonoBehaviour
 
     private float speed;
     private bool running = false;
-    public float maxStamina = 100;
+    public float maxStamina = 100f;
     public float currentStamina;
     public float currentHealth;
-    public float maxHealth = 100;  
+    public float maxHealth = 100f;  
+    public float KBForce = 100f;
     public Rigidbody2D rb;
-    public UnityEvent<GameObject> OnHitWithReference;
     Vector2 movement;
+    Vector2 direction;
 
     void Start()
     {
@@ -65,15 +68,12 @@ public class PlayerMovement : MonoBehaviour
         return new Vector2(currentStamina, maxStamina);
     }
 
-
-    public void GetHit(GameObject sender)
-    {
-        OnHitWithReference?.Invoke(sender);
-    }
-
     private void OnCollisionEnter2D(Collision2D other) {
+        Collider2D collider = other.collider;
+ 
         if(other.transform.tag == "Enemy")
         {
+            rb.AddForce(rb.transform.up * KBForce);
             currentHealth -= 10;
         } 
     }
