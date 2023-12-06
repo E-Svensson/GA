@@ -23,10 +23,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake(){
         animator = GetComponent<Animator>();
     }
-
-    private void OnMovement(InputValue value){
-
-    }
     void Start()
     {
         currentStamina = maxStamina;
