@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Knockback : MonoBehaviour
+public class Inventory : MonoBehaviour
 {
-   
+    
 }

@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
 
     public Transform player;
-    private float moveSpeed = 3f;
+    private float moveSpeed = 2f;
     private Rigidbody2D rb;
     private Vector2 movement;
     private float currentHealth;
