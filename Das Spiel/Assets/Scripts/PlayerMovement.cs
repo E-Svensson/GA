@@ -7,17 +7,26 @@ public class PlayerMovement : MonoBehaviour
 {
 
     private float speed;
-    private bool running = false;
+    public bool running = false;
     public float maxStamina = 100f;
     public float currentStamina;
     public float currentHealth;
     public float maxHealth = 100f;  
     public float KBForce = 10f;
     public Rigidbody2D rb;
+    public Animator animator;
     Vector2 movement;
     bool pushedBack = false;
     float pushBackTime = 0.5f;
     float pushBackTimer = 0.6f;
+
+    private void Awake(){
+        animator = GetComponent<Animator>();
+    }
+
+    private void OnMovement(InputValue value){
+
+    }
     void Start()
     {
         currentStamina = maxStamina;
@@ -34,27 +43,26 @@ public class PlayerMovement : MonoBehaviour
     void Update() // Update is called once per frame
     {
         // Gör det möjligt för gubben att röra på sig med WASD eller piltangenterna
-
-
-        
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         movement.Normalize(); // Normaliserar gubbens rörelser enligt enhetscirkeln
 
+        // Gör det möjligt att springa
         if (Input.GetKeyDown(KeyCode.LeftShift)) 
             running = true;
         else if (Input.GetKeyUp(KeyCode.LeftShift))
             running = false;
 
+        // "direction" 
         Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         direction.Normalize();
 
-        if(running && currentStamina > 0)
+        if (running && currentStamina > 0)
         {
             speed = 6f;
 
             // Stamina ska endast minska om gubben rör på sig
-            if(direction.x != 0 || direction.y != 0)
+            if (direction.x != 0 || direction.y != 0)
                 currentStamina -= 10 * Time.deltaTime;
         }
         else
@@ -91,6 +99,4 @@ public class PlayerMovement : MonoBehaviour
         pushedBack = true;
         pushBackTimer = 0;
     }
-    
-    
 }
