@@ -1,26 +1,43 @@
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
 
-    private float speed;
+    [SerializeField] private int speed = 3;
     public bool running = false;
     public float maxStamina = 100f;
     public float currentStamina;
     public float currentHealth;
     public float maxHealth = 100f;  
     public float KBForce = 10f;
-    public Rigidbody2D rb;
-    public Animator animator;
-    Vector2 movement;
     bool pushedBack = false;
     float pushBackTime = 0.5f;
     float pushBackTimer = 0.6f;
 
+    private Rigidbody2D rb;
+    public Animator animator;
+    private Vector2 movement;
+
+    private void OnMovement (InputValue value) {
+        movement = value.Get<Vector2>();
+
+        if (movement.x != 0 || movement.y != 0){ // Animation när spelaren inte står still
+            animator.SetFloat("X", movement.x);
+            animator.SetFloat("Y", movement.y);
+
+            animator.SetBool("IsWalking", true);
+        } else { //Animation annars
+
+        }
+    }
+
     private void Awake(){
+        // Kopplar variablerna till Unitys komponenter
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
     void Start()
@@ -38,11 +55,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update() // Update is called once per frame
     {
-        // Gör det möjligt för gubben att röra på sig med WASD eller piltangenterna
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        movement.Normalize(); // Normaliserar gubbens rörelser enligt enhetscirkeln
-
         // Gör det möjligt att springa
         if (Input.GetKeyDown(KeyCode.LeftShift)) 
             running = true;
@@ -55,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (running && currentStamina > 0)
         {
-            speed = 6f;
+            speed = 6;
 
             // Stamina ska endast minska om gubben rör på sig
             if (direction.x != 0 || direction.y != 0)
@@ -63,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            speed = 3f;
+            speed = 3;
             currentStamina += 5 * Time.deltaTime;
         }
 
