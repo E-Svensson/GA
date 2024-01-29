@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     public Animator animator;
     private Vector2 movement;
+    
 
     private void OnMovement (InputValue value) {
         movement = value.Get<Vector2>();
