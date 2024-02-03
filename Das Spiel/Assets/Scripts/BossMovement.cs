@@ -5,27 +5,42 @@ using UnityEngine.UIElements;
 
 public class BossMovement : MonoBehaviour
 {
-    int rndSec;
-    int rndPos;
-    private float nextAction;
-    float maxRadius = 4f;
-    float minRadius = 1f;
-    void Start()
+    float maxRadius = 5f;
+    float minRadius = 2f;
+    bool CanTP = true;
+    private void Start()
     {
-        nextAction = Time.time + 2f;
-        rndSec = Random.Range(2, 4);
-        rndPos = Random.Range(2, 4);
+
+    }
+    private void Update()
+    {
+        if(CanTP)
+            StartCoroutine(Teleport());
+    }
+
+    private void Stage1(){
+
+    }
+
+    private void Stage2(){
+
+    }
+
+    private void Stage3(){
+
+    }
+
+    private void Stage4(){
         
     }
-    void Update()
-    {
-        if(nextAction >= Time.time)
-        {
-            Vector2 randomPos = Random.insideUnitCircle * (maxRadius - minRadius);
-            transform.position = randomPos.normalized * minRadius + randomPos;
-            nextAction += 2f;
-        }
-        
+
+
+    IEnumerator Teleport(){
+        Vector2 randomPos = Random.insideUnitCircle * (maxRadius - minRadius);
+        transform.position = randomPos.normalized * minRadius + randomPos;
+        CanTP = false;
+        yield return new WaitForSeconds(1f);
+        CanTP = true;
     }
 
 }

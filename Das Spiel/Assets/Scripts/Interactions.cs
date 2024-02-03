@@ -1,20 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class Interaktions : MonoBehaviour
+public class Interactions : MonoBehaviour
 {
-    public bool DoorOpen = false;
-    public bool DoorLocked = false;
-    // Start is called before the first frame update
-    void Start()
+    public PlayerAimController playerAim;
+    public bool playerIsClose;
+    public string Action;
+    public string Key;
+    public TextMeshProUGUI Interact;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.CompareTag("Interactable")) 
+        {
+            playerIsClose = true;
+            Interact.text = $"Use {Key} to {Action}";
+            playerAim.CanFire = false;
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit2D(Collider2D other)
     {
-             
+        if (other.CompareTag("Interactable"))
+        {
+            playerIsClose = false;
+            Interact.text = "";
+            playerAim.CanFire = true;
+        }
     }
 }

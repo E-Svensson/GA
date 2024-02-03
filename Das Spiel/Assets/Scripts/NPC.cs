@@ -6,25 +6,28 @@ using TMPro;
 
 public class NPC : MonoBehaviour
 {
+    public Interactions interactions;
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
     public string[] dialogue;
     private int index = 0;
-
     public float wordSpeed;
-    public bool playerIsClose;
 
 
     void Start()
     {
         dialogueText.text = "";
+
+        interactions.Key = "E";
+        interactions.Action = "talk";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && playerIsClose)
+        if (Input.GetKeyDown(KeyCode.E) && interactions.playerIsClose)
         {
+            interactions.Interact.text = "";
             if (!dialoguePanel.activeInHierarchy)
             {
                 dialoguePanel.SetActive(true);
@@ -40,6 +43,9 @@ public class NPC : MonoBehaviour
         {
             RemoveText();
         }
+
+        if(!interactions.playerIsClose)
+            RemoveText();
     }
 
     public void RemoveText()
@@ -68,23 +74,6 @@ public class NPC : MonoBehaviour
         }
         else
         {
-            RemoveText();
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerIsClose = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerIsClose = false;
             RemoveText();
         }
     }
