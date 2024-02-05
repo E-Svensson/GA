@@ -1,21 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class BossMovement : MonoBehaviour
+public class BossMovement : Entity
 {
     float maxRadius = 5f;
     float minRadius = 2f;
-    bool CanTP = true;
+    bool CanTP = false;
     private void Start()
     {
-
+        currentHealth = 1000f;
     }
     private void Update()
     {
         if(CanTP)
             StartCoroutine(Teleport());
+
+
+        if(currentHealth <= 750){
+            Stage2();
+        }
+        else if (currentHealth <= 500)
+        {
+            Stage3();
+        }
+        else if(currentHealth <= 250)
+        {
+            Stage4();
+        }
+        else if(currentHealth <= 0)
+        {
+            //Death Animation
+        }
+        else{
+            Stage1();
+        }
     }
 
     private void Stage1(){
@@ -31,6 +52,10 @@ public class BossMovement : MonoBehaviour
     }
 
     private void Stage4(){
+        
+    }
+
+    private void PenThrowing(){
         
     }
 

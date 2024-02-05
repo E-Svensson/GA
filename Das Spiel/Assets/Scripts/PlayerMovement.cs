@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
-public class PlayerMovement : MonoBehaviour
+public enum WalkDirection{
+    Up,
+    Rest
+}
+public class PlayerMovement : Entity
 {
-
+    public static WalkDirection walkDirection = WalkDirection.Rest;
     [SerializeField] private int speed = 3;
     public bool running = false;
     public float maxStamina = 100f;
     public float currentStamina;
-    public float currentHealth;
-    public float maxHealth = 100f;  
     public float KBForce = 10f;
     bool pushedBack = false;
     float pushBackTime = 0.5f;
     float pushBackTimer = 0.6f;
-
     private Rigidbody2D rb;
     public Animator animator;
     private Vector2 movement;
@@ -43,8 +44,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
+        currentHealth = 100f;
         currentStamina = maxStamina;
-        currentHealth = maxHealth;
     }
     void FixedUpdate() 
     {
@@ -65,7 +66,12 @@ public class PlayerMovement : MonoBehaviour
         // "direction" 
         Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         direction.Normalize();
-
+        if(direction.y > 0){
+            walkDirection = WalkDirection.Up; 
+        }
+        else if (direction.y < 0) {
+            walkDirection = WalkDirection.Rest; 
+        }
         if (running && currentStamina > 0)
         {
             speed = 6;
@@ -82,10 +88,6 @@ public class PlayerMovement : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth, -1, maxHealth);
         currentStamina = Mathf.Clamp(currentStamina, -1, maxStamina); 
-    }
-    public Vector2 GetHealth()
-    {
-        return new Vector2(currentHealth, maxHealth);
     }
     public Vector2 GetStamina()
     {

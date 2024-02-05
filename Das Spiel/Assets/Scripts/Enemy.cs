@@ -1,20 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
 
     public Transform player;
     private float moveSpeed = 2f;
     private Rigidbody2D rb;
     private Vector2 movement;
-    private float currentHealth;
-    private float maxHealth = 100;
 
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
+        currentHealth = 12;
     }
     void Update()
     {
@@ -22,10 +22,11 @@ public class Enemy : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         rb.rotation = angle;
         direction.Normalize();
-        movement = direction;
+        movement = direction;   
 
-        if(Input.GetKeyDown(KeyCode.Space)){
-            currentHealth -= 10;
+        if(currentHealth <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -36,8 +37,10 @@ public class Enemy : MonoBehaviour
     void moveCharacter(Vector2 direction){
         rb.MovePosition((Vector2)transform.position + (direction * moveSpeed * Time.deltaTime));
     }
-    public Vector2 GetHealth()
-    {
-        return new Vector2(currentHealth, maxHealth);
-    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+            if(other.gameObject.CompareTag("Bullet")){
+                currentHealth -= 3;
+            }
+        }
 }

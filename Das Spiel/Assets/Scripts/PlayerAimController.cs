@@ -18,7 +18,6 @@ public class PlayerAimController : MonoBehaviour
     public float Ammo = 0;
     private float MaxAmmo = 12f;
     public TextMeshProUGUI tmp;
-
     private void Awake(){
         aimTransform = transform.Find("Aim");
     }
@@ -36,6 +35,10 @@ public class PlayerAimController : MonoBehaviour
             CanFire = false;
             StartCoroutine(Realod());
         }
+
+        if(Input.GetKeyDown(KeyCode.R))
+            StartCoroutine(Realod());
+        
 
         if(Reloading)
             tmp.text = "Reloading...";
@@ -68,11 +71,13 @@ public class PlayerAimController : MonoBehaviour
         else
             gun.transform.localScale = new Vector3(1, -1, 1);
         
-        if(Input.GetKeyDown(KeyCode.W)){
-            gun.transform.localPosition = new Vector3(0.3226f, -0.0217f, 0f);
+
+        if(PlayerMovement.walkDirection == WalkDirection.Up){
+            gun.transform.localPosition = new Vector3(0.3226f, -0.0217f, 1f);
         }
-        else
+        else{
             gun.transform.localPosition = new Vector3(0.3226f, -0.0217f, -1f);
+        }
     }
     public static Vector3 GetMouseWorldPosition(){
         Vector3 vec = GetMouseWorldPositionWithZ(Input.mousePosition, Camera.main);
@@ -94,6 +99,7 @@ public class PlayerAimController : MonoBehaviour
     IEnumerator Realod()
     {
         Reloading = true;
+        CanFire = false;
         yield return new WaitForSeconds(2f);
         Reloading = false;
         Ammo = MaxAmmo;
