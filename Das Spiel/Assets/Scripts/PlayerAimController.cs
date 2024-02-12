@@ -105,4 +105,8 @@ public class PlayerAimController : MonoBehaviour
         Ammo = MaxAmmo;
         CanFire = true;
     }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        print("Collision");
+    }
 }
