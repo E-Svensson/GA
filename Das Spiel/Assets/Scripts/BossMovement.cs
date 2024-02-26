@@ -8,30 +8,31 @@ public class BossMovement : Entity
 {
     float maxRadius = 5f;
     float minRadius = 2f;
+    float CD = 10f;
     bool CanTP = false;
     private void Start()
     {
         currentHealth = 1000f;
+        CanTP = true;
     }
     private void Update()
     {
-        if(CanTP)
-            StartCoroutine(Teleport());
+        if(CanTP){
 
+        }
 
         if(currentHealth <= 750){
             Stage2();
         }
-        else if (currentHealth <= 500)
-        {
+
+        else if (currentHealth <= 500){
             Stage3();
         }
-        else if(currentHealth <= 250)
-        {
+
+        else if(currentHealth <= 250){
             Stage4();
         }
-        else if(currentHealth <= 0)
-        {
+        else if(currentHealth <= 0){
             //Death Animation
         }
         else{
@@ -60,12 +61,11 @@ public class BossMovement : Entity
     }
 
 
-    IEnumerator Teleport(){
+    private void Teleport(){
         Vector2 randomPos = Random.insideUnitCircle * (maxRadius - minRadius);
         transform.position = randomPos.normalized * minRadius + randomPos;
         CanTP = false;
-        yield return new WaitForSeconds(1f);
-        CanTP = true;
+        //CanTP = true;
     }
 
 }
