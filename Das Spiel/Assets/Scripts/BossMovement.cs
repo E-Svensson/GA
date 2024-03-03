@@ -8,18 +8,18 @@ public class BossMovement : Entity
 {
     float maxRadius = 5f;
     float minRadius = 2f;
-    float CD = 10f;
     bool CanTP = false;
+    private float targetTime;
+    bool Repeat = true;
     private void Start()
     {
         currentHealth = 1000f;
-        CanTP = true;
+        //CanTP = true;
     }
     private void Update()
     {
-        if(CanTP){
-
-        }
+        targetTime -= Time.deltaTime;
+        if(CanTP && Repeat){Teleport();}
 
         if(currentHealth <= 750){
             Stage2();
@@ -41,7 +41,11 @@ public class BossMovement : Entity
     }
 
     private void Stage1(){
-
+        targetTime = 3f;
+        if(targetTime <= 0)
+        {
+            CanTP = true;
+        }
     }
 
     private void Stage2(){
@@ -64,8 +68,12 @@ public class BossMovement : Entity
     private void Teleport(){
         Vector2 randomPos = Random.insideUnitCircle * (maxRadius - minRadius);
         transform.position = randomPos.normalized * minRadius + randomPos;
-        CanTP = false;
-        //CanTP = true;
+        Repeat = false;
+    }
+
+    IEnumerator Wait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
     }
 
 }
