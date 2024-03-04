@@ -9,43 +9,34 @@ public class BossMovement : Entity
     float maxRadius = 5f;
     float minRadius = 2f;
     bool CanTP = false;
+    bool CanPen = false;
     private float targetTime;
-    bool Repeat = true;
-    private void Start()
+    public Rigidbody2D rb;
+    public GameObject penPrefab;
+    public Transform firePoint;
+    public Rigidbody2D player;
+    public float throwForce = 5f;
+
+    public void Start()
     {
         currentHealth = 1000f;
         //CanTP = true;
+        StartCoroutine(Wait());
     }
-    private void Update()
+    public void Update()
     {
-        targetTime -= Time.deltaTime;
-        if(CanTP && Repeat){Teleport();}
+    }
 
-        if(currentHealth <= 750){
-            Stage2();
-        }
+    private void FixedUpdate() {
+        Vector2 lookDir = player.position - rb.position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        rb.rotation = angle;
 
-        else if (currentHealth <= 500){
-            Stage3();
-        }
-
-        else if(currentHealth <= 250){
-            Stage4();
-        }
-        else if(currentHealth <= 0){
-            //Death Animation
-        }
-        else{
-            Stage1();
-        }
     }
 
     private void Stage1(){
-        targetTime = 3f;
-        if(targetTime <= 0)
-        {
-            CanTP = true;
-        }
+        CanTP = false;
+        CanPen = true;
     }
 
     private void Stage2(){
@@ -61,19 +52,51 @@ public class BossMovement : Entity
     }
 
     private void PenThrowing(){
-        
+        GameObject pen = Instantiate(penPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody2D PenRb = pen.GetComponent<Rigidbody2D>();
+        PenRb.AddForce(firePoint.right * throwForce, ForceMode2D.Impulse);
+        CanPen = false;
     }
 
 
     private void Teleport(){
         Vector2 randomPos = Random.insideUnitCircle * (maxRadius - minRadius);
         transform.position = randomPos.normalized * minRadius + randomPos;
-        Repeat = false;
+        CanTP = false;
     }
 
-    IEnumerator Wait(float seconds)
+    IEnumerator Wait()
     {
-        yield return new WaitForSeconds(seconds);
+        float seconds = 2f;
+        while(true){
+            yield return new WaitForSeconds(seconds);
+            if(CanTP){
+                Teleport();
+                seconds = 3f;
+            }
+            else if(CanPen){
+                PenThrowing();
+                seconds = 1f;
+            }
+
+            if(currentHealth <= 750){
+                Stage2();
+            }
+
+            else if (currentHealth <= 500){
+                Stage3();
+            }
+
+            else if(currentHealth <= 250){
+                Stage4();
+            }
+            else if(currentHealth <= 0){
+                //Death Animation
+            }
+            else{
+                Stage1();
+            }
+        }
     }
 
 }
