@@ -42,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Ritningar
+    uniqueID: 1335980515
+    locked: 0
   - name: Floor
     uniqueID: 3132624233
     locked: 0
