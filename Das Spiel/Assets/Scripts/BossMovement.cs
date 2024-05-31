@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BossMovement : Entity
-{
+{/*
     float maxRadius = 5f;
     float minRadius = 2f;
     float time;
